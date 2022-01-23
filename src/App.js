@@ -1,17 +1,21 @@
 import React, {useState} from "react";
 import './App.css';
+import Todo from "./components/Todo";
 
 function App() {
 
   const [newTodo, setNewTodo] = useState("");
   const [todos, setTodos] = useState([]);
 
+  //===DELETE===
   const handleTodoDelete = (delIdx) => {
     const filteredTodos = todos.filter((todo, i) => {
       return i !== delIdx;
     });
     setTodos(filteredTodos);
   }
+
+  //===ADD TO ARRAY===
   const handleNewTodoSubmit = (event) => {
     event.preventDefault();
     if (newTodo.length === 0){
@@ -26,6 +30,7 @@ function App() {
     setNewTodo("");
   }
 
+  //TOGGLE CHECKBOX===
   const toggleComplete = (idx) => {
     const updatedTodos = todos.map((todo, i) => {
       if (idx === i) {
@@ -48,23 +53,14 @@ function App() {
           <button>Add</button>
         </div>
       </form>
-      {
-        todos.map((todo, i) => {
+      {todos.map((todo, i) => {
           return (
-            <div key={i}>
-              <span>{todo.text}</span>
-              <input onChange={(event) => {
-                toggleComplete(i);
-              }} checked={todo.complete}  type="checkbox"/>
-              <button onClick={(event) => {
-                handleTodoDelete(i);
-              }}
-              style={{marginLeft: "10px"}}
-              >Delete</button>
-            </div>
+            <Todo key={i} i={i} todo={todo} 
+            toggleComplete = {toggleComplete} 
+            handleTodoDelete = {handleTodoDelete}
+            />
           );
-        })
-      }
+        })}
     </div>
   );
 }
