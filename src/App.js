@@ -14,19 +14,26 @@ function App() {
   }
   const handleNewTodoSubmit = (event) => {
     event.preventDefault();
-
     if (newTodo.length === 0){
       return;
     }
-
     const todoItem = {
       text: newTodo,
       complete: false
     }
-
     //===setTodos and adds newTodo too array===
     setTodos([...todos, todoItem])
     setNewTodo("");
+  }
+
+  const toggleComplete = (idx) => {
+    const updatedTodos = todos.map((todo, i) => {
+      if (idx === i) {
+        todo.complete = !todo.complete;
+      }
+      return todo;
+    });
+    setTodos(updatedTodos);
   }
 
   return (
@@ -46,7 +53,9 @@ function App() {
           return (
             <div key={i}>
               <span>{todo.text}</span>
-              <input type="checkbox"/>
+              <input onChange={(event) => {
+                toggleComplete(i);
+              }} checked={todo.complete}  type="checkbox"/>
               <button onClick={(event) => {
                 handleTodoDelete(i);
               }}
